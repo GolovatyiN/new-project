@@ -4,10 +4,12 @@
   "description": "Gulp-based frontend build system for Final project",
   "main": "index.js",
   "scripts": {
-    "start": "gulp"
+    "start": "gulp",
+    "deploy": "gulp deploy"
   },
   "devDependencies": {
     "browser-sync": "^3.0.3",
+    "gh-pages": "^6.3.0",
     "gulp": "^5.0.0",
     "gulp-autoprefixer": "^9.0.0",
     "gulp-clean-css": "^4.3.0",
@@ -21,3 +23,5 @@
     "sass": "^1.77.6"
   }
 }
+
+

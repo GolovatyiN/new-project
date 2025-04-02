@@ -79,9 +79,9 @@ async function pages() {
         .pipe(replace(/xlink:href="\.\//g, 'xlink:href="./')) // Fix paths for SVG sprites
         .pipe(replace(/href="(\.\/|\.\.\/)styles\/([^"]+)"/g, (match, prefix, cssFile) => {
             if (prefix === '../') {
-                return href="../css/${cssFile}"; // Adjust CSS paths for production build
+                return `href="../css/${cssFile}"`; // Adjust CSS paths for production build
             } else {
-                return href="./css/${cssFile}"; // Adjust CSS paths for development build
+                return `href="./css/${cssFile}"`; // Adjust CSS paths for development build
             }
         }))
         .pipe(gulpIf(isProduction, htmlmin({ collapseWhitespace: true }))) // Minify HTML if in production mode

@@ -33,7 +33,7 @@
                         </a></li>
                     </ul>
                 </div>
-                <nav class="flex"><a href="#">about us</a> <a href="#">services</a> <a href="./pages/page.html">team</a>
+                <nav class="flex"><a href="#">about us</a> <a href="#">services</a> <a href="./pages/team.html">team</a>
                     <a href="#">publications</a> <a href="#">contact</a></nav>
             </div>
         </div>
@@ -65,12 +65,21 @@
         </section>
         <section class="mobile-nav">
             <div class="mobile-nav-btn">
-                <button class="small-btn">УК</button>
-                <button class="small-btn">РУ</button>
-                <button class="small-btn active">EN</button>
+                <button class="small-btn lang-btn">UK</button>
+                <button class="small-btn lang-btn">RU</button>
+                <button class="small-btn lang-btn active">EN</button>
             </div>
             <a href="">0800 211 927</a></section>
         <section class="logo-and-burger">
+            <div class="mobile-menu">
+                <nav class="mobile-nav-links">
+                    <a href="#">about us</a>
+                    <a href="#">services</a>
+                    <a href="#">team</a>
+                    <a href="#">publications</a>
+                    <a href="#">contact</a>
+                </nav>
+            </div>
             <div class="logo-mobile"><a href="">
                 <svg width="69" height="32">
                     <use xlink:href="sprite.svg#logo"/>
@@ -80,9 +89,11 @@
                     <use xlink:href="sprite.svg#slash"/>
                 </svg>
                 <p>services</p></div>
-            <svg width="32" height="32">
-                <use xlink:href="sprite.svg#hamburger"/>
-            </svg>
+            <div class="burger-icon" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </section>
         <div class="container">
             <div class="flex-column">
@@ -284,22 +295,39 @@
         </div>
     </div>
 </section>
+
+<div class="preloader" id="preloader">
+    <div class="spinner"></div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<script>$(document).ready(function () {
+<script>
+    window.addEventListener("load", function () {
+        const preloader = document.getElementById("preloader");
+        preloader.classList.add("fade-out");
+    });
+    $(document).ready(function () {
     $("#tabs").tabs();
 
     $(".sliders").slick({
         'dots': true,
     });
 
-    document.querySelectorAll('.lang-btn').forEach(button => {
-      button.addEventListener('click', function () {
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-      });
+
+    $(document).on('click', '.lang-btn', function () {
+        $('.lang-btn').removeClass('active');
+        $(this).addClass('active');
     });
+
+    const burger = document.getElementById("burger");
+    if (burger) {
+        burger.addEventListener("click", function () {
+            console.log("Бургер нажат");
+            document.querySelector(".mobile-menu").classList.toggle("show");
+        });
+    }
 });
 </script>
 

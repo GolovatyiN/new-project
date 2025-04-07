@@ -20,7 +20,7 @@ const paths = {
         dest: 'dist/js'
     },
     images: {
-        src: 'images//*',
+        src: 'images/**/*',
         dest: 'dist/images'
     },
     sprite: {
@@ -56,18 +56,10 @@ function scripts() {
         .pipe(browserSync.stream()); // Stream changes to BrowserSync
 }
 
-// Copy sprite.svg to dist
-function sprite() {
-    return gulp.src(paths.sprite.src)
-        .pipe(gulp.dest(paths.sprite.dest)); // Copy sprite.svg to dist folder
-}
-
 // Optimize images
-async function images() {
-    const imagemin = (await import('gulp-imagemin')).default;
+function images() {
     return gulp.src(paths.images.src)
-        .pipe(gulpIf(isProduction, imagemin())) // Optimize images if in production mode
-        .pipe(gulp.dest(paths.images.dest))
+        .pipe(gulp.dest(paths.images.dest)) // Copy images without optimization
         .pipe(browserSync.stream()); // Stream changes to BrowserSync
 }
 
@@ -87,6 +79,12 @@ async function pages() {
         .pipe(gulpIf(isProduction, htmlmin({ collapseWhitespace: true }))) // Minify HTML if in production mode
         .pipe(gulp.dest(paths.pages.dest))
         .pipe(browserSync.stream()); // Stream changes to BrowserSync
+}
+
+// Sprite task
+function sprite() {
+    return gulp.src(paths.sprite.src)
+        .pipe(gulp.dest(paths.sprite.dest)); // Копирует sprite.svg в dist/
 }
 
 // Watch files for changes
@@ -118,10 +116,10 @@ function watch() {
 const build = gulp.series(gulp.parallel(styles, scripts, images, sprite, pages)); // Build task for production
 const dev = gulp.series(build, watch); // Development task with watch mode
 
-
 // Deploy task
 gulp.task('deploy', function () {
-    return gulp.src('./dist/**/*').pipe(deploy())
+    return gulp.src('./dist/**/*', { base: 'dist', allowEmpty: true }) // Сохраняем структуру
+        .pipe(deploy());
 });
 
 const deployGithubPages = gulp.series(build, 'deploy');
